@@ -26,11 +26,12 @@ namespace MyNoteService.DataLayer
         /// создание объекта
         /// </summary>
         /// <param name="item"></param>
-        void CreateEntity(T item);
+        T CreateEntity(T item);
         /// <summary>
         /// удаление объекта по id
         /// </summary>
         /// <param name="id"></param>
+        T EditEntity(T item);
         void DeleteEntity(int id); 
     }
 }

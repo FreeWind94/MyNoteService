@@ -10,6 +10,7 @@ namespace MyNoteService.Model
         public User Aurhor { get; set; }
         public string Topic { get; set; }
         public string Text { get; set; }
-        public List<Tag> Tags { get; set; }
+        public IEnumerable<Tag> Tags { get; set; }
+        public IEnumerable<User> UsersWhithAccess { get; set; }
     }
 }

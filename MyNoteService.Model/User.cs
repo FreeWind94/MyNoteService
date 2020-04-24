@@ -8,7 +8,7 @@ namespace MyNoteService.Model
     {
         public int UserID { get; set; }
         public string LoginName { get; set; }
-        public string UserPassword { get; set; }
+        public string UserPassword { get; set; } // TODO: наверное это нужно хранить не так но эту проблему я оставляю будущему мне
 
     }
 }

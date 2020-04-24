@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNoteService.Model", "MyNo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNoteService.DataLayer", "MyNoteService.DataLayer\MyNoteService.DataLayer.csproj", "{0F54ADC5-099D-413F-AE41-0464DA0B9571}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNoteService.DataLayer.SQL", "MyNoteService.DataLayer.SQL\MyNoteService.DataLayer.SQL.csproj", "{1C14A684-540B-48FB-84C2-22EE2B597D24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0F54ADC5-099D-413F-AE41-0464DA0B9571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F54ADC5-099D-413F-AE41-0464DA0B9571}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F54ADC5-099D-413F-AE41-0464DA0B9571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C14A684-540B-48FB-84C2-22EE2B597D24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C14A684-540B-48FB-84C2-22EE2B597D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C14A684-540B-48FB-84C2-22EE2B597D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C14A684-540B-48FB-84C2-22EE2B597D24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

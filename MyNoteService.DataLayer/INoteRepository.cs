@@ -12,5 +12,9 @@ namespace MyNoteService.DataLayer
         //  вывод юзеров с доступом к заметке
         IEnumerable<User> GetUsersWhithAccess(int noteId);
         // добавить что-то ещё???
+        void AddNoteTag(Note note, Tag tag); // ???
+        void RemoveNoteTag(Note note, Tag tag); // ???
+        void AddUserWhithAccess(Note note, User user); // ???
+        void RemoveUserWhithAccess(Note note, User user); // ???
     }
 }

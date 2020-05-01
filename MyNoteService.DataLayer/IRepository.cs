@@ -15,7 +15,7 @@ namespace MyNoteService.DataLayer
         /// получение всех объектов
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetEntities();
+        IEnumerable<T> GetEntities();  //TODO: иногда этот метод выгружает слишком много данных, подумать что с этим делать (перепиливать интерфейсы? добавить пагинацию)
         /// <summary>
         /// получение одного объекта по id
         /// </summary>

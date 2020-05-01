@@ -22,6 +22,16 @@ namespace MyNoteService.DataLayer.SQL
             _tagRepository = tagRepository;
         }
 
+        public void AddNoteTag(Note note, Tag tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddUserWhithAccess(Note note, User user)
+        {
+            throw new NotImplementedException();
+        }
+
         public Note CreateEntity(Note item)
         {
             // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
@@ -130,20 +140,157 @@ namespace MyNoteService.DataLayer.SQL
 
         public IEnumerable<Note> GetEntities()
         {
-            throw new NotImplementedException();
+            // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
+            using (var sql = new SqlConnection(_connectionString))
+            {
+                sql.Open();
+
+                //SQL команда вывода всех заметок
+                using (var command = sql.CreateCommand())
+                {
+                    command.CommandText = "select [NoteID], [UserId], [Topic], [Text] from [dbo].[Notes]";
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        // TODO: зарефакторить этот ужас
+                        while (reader.Read())
+                        {
+                            Note note = new Note
+                            {
+                                NoteID = reader.GetInt32(reader.GetOrdinal("NoteID")),
+                                Aurhor = _userRepository.GetEntityByID(reader.GetInt32(reader.GetOrdinal("UserId"))),
+                                Topic = reader.GetString(reader.GetOrdinal("Topic")),
+                                Text = reader.GetString(reader.GetOrdinal("Text"))
+                            };
+                            note.Tags = this.GetNoteTags(note.NoteID);
+                            note.UsersWhithAccess = this.GetUsersWhithAccess(note.NoteID);
+
+                            yield return note;
+                        }
+                    }
+                }
+            }
         }
 
         public Note GetEntityByID(int id)
         {
+            // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
+            using (var sql = new SqlConnection(_connectionString))
+            {
+                sql.Open();
+
+                //SQL команда вывода заметки
+                using (var command = sql.CreateCommand())
+                {
+                    command.CommandText = "select [NoteID], [UserId], [Topic], [Text] from [dbo].[Notes] where [NoteID] = @noteID";
+                    command.Parameters.AddWithValue("@noteID", id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return ReadNote(reader);
+                    }
+                }
+            }
+
             throw new NotImplementedException();
+        }
+
+        private Note ReadNote(SqlDataReader reader)
+        {
+            if (!reader.Read())
+            {
+                throw new IOException("Insert query did not return User");
+            }
+            Note note = new Note
+            {
+                NoteID = reader.GetInt32(reader.GetOrdinal("NoteID")),
+                Aurhor = _userRepository.GetEntityByID(reader.GetInt32(reader.GetOrdinal("UserId"))),
+                Topic = reader.GetString(reader.GetOrdinal("Topic")),
+                Text = reader.GetString(reader.GetOrdinal("Text"))
+            };
+            note.Tags = this.GetNoteTags(note.NoteID);
+            note.UsersWhithAccess = this.GetUsersWhithAccess(note.NoteID);
+
+            return note;
         }
 
         public IEnumerable<Tag> GetNoteTags(int noteId)
         {
-            throw new NotImplementedException();
+            // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
+            using (var sql = new SqlConnection(_connectionString))
+            {
+                sql.Open();
+
+                //SQL команда вывода всех тегов заметки с указаным id
+                using (var command = sql.CreateCommand())
+                {
+                    command.CommandText = "select t.TagID, t.TagName from [dbo].[Tags] as t join [dbo].[NoteTags] as nt on nt.TagID = t.TagID where NoteID = @noteID;";
+                    command.Parameters.AddWithValue("@noteID", noteId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return ReadTags(reader);
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<Tag> ReadTags(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                Tag tag = new Tag
+                {
+                    TagID = reader.GetInt32(reader.GetOrdinal("TagID")),
+                    TagName = reader.GetString(reader.GetOrdinal("TagName"))
+                };
+
+                yield return tag;
+            }
         }
 
         public IEnumerable<User> GetUsersWhithAccess(int noteId)
+        {
+            // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
+            using (var sql = new SqlConnection(_connectionString))
+            {
+                sql.Open();
+
+                //SQL команда вывода всех юзеров у которых есть доступ к заметке с указаным id
+                using (var command = sql.CreateCommand())
+                {
+                    command.CommandText = "select u.UserID, u.LoginName, u.UserPassword from [dbo].[Users] as u join [dbo].[Access] as a on a.UserID = u.UserID where NoteID = @noteID;";
+                    command.Parameters.AddWithValue("@noteID", noteId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return ReadUsers(reader);
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<User> ReadUsers(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                User user = new User
+                {
+                    UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
+                    LoginName = reader.GetString(reader.GetOrdinal("LoginName")),
+                    UserPassword = reader.GetString(reader.GetOrdinal("UserPassword"))
+                };
+
+                yield return user;
+            }
+        }
+
+        public void RemoveNoteTag(Note note, Tag tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveUserWhithAccess(Note note, User user)
         {
             throw new NotImplementedException();
         }

@@ -7,6 +7,7 @@ namespace MyNoteService.DataLayer
 {
     public interface ITagRepository : IRepository<Tag>
     {
-        // добавить что-то ещё???
+        // вывод тегов заметки
+        IEnumerable<Tag> GetNoteTags(int noteId);
     }
 }

@@ -12,5 +12,8 @@ namespace MyNoteService.DataLayer
         User IsUserAuthorized(string login, string password); //пока так
 
         void DeleteEntity(string loginName);
+
+        //  вывод юзеров с доступом к заметке
+        IEnumerable<User> GetUsersWhithAccess(int noteId);
     }
 }

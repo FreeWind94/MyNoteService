@@ -105,16 +105,7 @@ namespace MyNoteService.DataLayer.SQL
 
                     using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
-                            Tag tag = new Tag
-                            {
-                                TagID = reader.GetInt32(reader.GetOrdinal("TagID")),
-                                TagName = reader.GetString(reader.GetOrdinal("TagName"))
-                            };
-
-                            yield return tag;
-                        }
+                        return ReadTags(reader);
                     }
                 }
             }
@@ -138,6 +129,43 @@ namespace MyNoteService.DataLayer.SQL
                         return ReadTag(reader);
                     }
                 }
+            }
+        }
+
+        
+
+        public IEnumerable<Tag> GetNoteTags(int noteId)
+        {
+            // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
+            using (var sql = new SqlConnection(_connectionString))
+            {
+                sql.Open();
+
+                //SQL команда вывода всех тегов заметки с указаным id
+                using (var command = sql.CreateCommand())
+                {
+                    command.CommandText = "select t.TagID, t.TagName from [dbo].[Tags] as t join [dbo].[NoteTags] as nt on nt.TagID = t.TagID where NoteID = @noteID;";
+                    command.Parameters.AddWithValue("@noteID", noteId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return ReadTags(reader);
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<Tag> ReadTags(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                Tag tag = new Tag
+                {
+                    TagID = reader.GetInt32(reader.GetOrdinal("TagID")),
+                    TagName = reader.GetString(reader.GetOrdinal("TagName"))
+                };
+
+                yield return tag;
             }
         }
 

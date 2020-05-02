@@ -122,17 +122,7 @@ namespace MyNoteService.DataLayer.SQL
 
                     using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
-                            User user = new User
-                            {
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                LoginName = reader.GetString(reader.GetOrdinal("LoginName")),
-                                UserPassword = reader.GetString(reader.GetOrdinal("UserPassword"))
-                            };
-                            
-                            yield return user; 
-                        }
+                        return ReadUsers(reader);
                     }
                 }
             }
@@ -216,6 +206,42 @@ namespace MyNoteService.DataLayer.SQL
                         return ReadUser(reader);
                     }
                 }
+            }
+        }
+
+        public IEnumerable<User> GetUsersWhithAccess(int noteId)
+        {
+            // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
+            using (var sql = new SqlConnection(_connectionString))
+            {
+                sql.Open();
+
+                //SQL команда вывода всех юзеров у которых есть доступ к заметке с указаным id
+                using (var command = sql.CreateCommand())
+                {
+                    command.CommandText = "select u.UserID, u.LoginName, u.UserPassword from [dbo].[Users] as u join [dbo].[Access] as a on a.UserID = u.UserID where NoteID = @noteID;";
+                    command.Parameters.AddWithValue("@noteID", noteId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return ReadUsers(reader);
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<User> ReadUsers(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                User user = new User
+                {
+                    UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
+                    LoginName = reader.GetString(reader.GetOrdinal("LoginName")),
+                    UserPassword = reader.GetString(reader.GetOrdinal("UserPassword"))
+                };
+
+                yield return user;
             }
         }
     }

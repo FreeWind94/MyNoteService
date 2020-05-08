@@ -11,9 +11,9 @@ namespace MyNoteService.DataLayer.SQL
     {
         private string _connectionString;
 
-        private IUserRepository _userRepository; //?????
+        private IUserRepository _userRepository; 
 
-        private ITagRepository _tagRepository; //????????
+        private ITagRepository _tagRepository; 
 
         public TsqlNoteRepository(string connectionString, IUserRepository userRepository, ITagRepository tagRepository) // TODO: разобраться с _userRepository, _tagRepository
         {
@@ -32,7 +32,6 @@ namespace MyNoteService.DataLayer.SQL
                 // создание новой заметки
                 using (var command = sql.CreateCommand())
                 {
-                    // TODO: ...
                     // предпологаем что гарантируется существование тегов и юзеров.
 
                     // команда добавить заметку

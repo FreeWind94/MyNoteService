@@ -9,7 +9,7 @@ namespace MyNoteService.DataLayer
     {
         User GetEntityByLogin(string login);
 
-        User IsUserAuthorized(string login, string password); //пока так
+        User UserAuthorization(string login, string password); //пока так
 
         void DeleteEntity(string loginName);
 

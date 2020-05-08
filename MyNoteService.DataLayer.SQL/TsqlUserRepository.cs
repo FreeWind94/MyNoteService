@@ -82,8 +82,7 @@ namespace MyNoteService.DataLayer.SQL
         }
 
         /// <summary>
-        /// Крайне небезопасная херня, будем считать что этот метод 
-        /// изменяет исключительно loginName у юзера с заданным UserID
+        /// Изменение loginName и/или serPassword у юзера с заданным UserID
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
@@ -98,8 +97,9 @@ namespace MyNoteService.DataLayer.SQL
                 using (var command = sql.CreateCommand())
                 {
                     // "пока" сделаем по простому без проверок)
-                    command.CommandText = "update [dbo].[Users] set [LoginName] = @loginName where [UserID] = @userID";
+                    command.CommandText = "update [dbo].[Users] set [LoginName] = @loginName, [UserPassword] = @userPassword where [UserID] = @userID";
                     command.Parameters.AddWithValue("@loginName", item.LoginName);
+                    command.Parameters.AddWithValue("@userPassword", item.UserPassword);
                     command.Parameters.AddWithValue("@userID", item.UserID);
                     command.ExecuteNonQuery();
                 }
@@ -187,7 +187,7 @@ namespace MyNoteService.DataLayer.SQL
             return user;
         }
 
-        public User IsUserAuthorized(string login, string password)
+        public User UserAuthorization(string login, string password)
         {
             // соединение с базой (внутри блока using, чтобы потом она сама закрылась)
             using (var sql = new SqlConnection(_connectionString))
@@ -232,6 +232,7 @@ namespace MyNoteService.DataLayer.SQL
 
         private static IEnumerable<User> ReadUsers(SqlDataReader reader)
         {
+            List<User> result = new List<User>();
             while (reader.Read())
             {
                 User user = new User
@@ -241,8 +242,10 @@ namespace MyNoteService.DataLayer.SQL
                     UserPassword = reader.GetString(reader.GetOrdinal("UserPassword"))
                 };
 
-                yield return user;
+                result.Add(user);
             }
+
+            return result;
         }
     }
 }

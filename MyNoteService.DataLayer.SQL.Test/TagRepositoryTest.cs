@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyNoteService.Model;
-using MyNoteService.DataLayer;
 using System;
 using System.Collections.Generic;
 

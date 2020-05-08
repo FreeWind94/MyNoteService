@@ -88,7 +88,6 @@ namespace MyNoteService.DataLayer.SQL
             }
 
             return item;
-            throw new NotImplementedException();
         }
 
         public IEnumerable<Tag> GetEntities()
@@ -157,6 +156,7 @@ namespace MyNoteService.DataLayer.SQL
 
         private static IEnumerable<Tag> ReadTags(SqlDataReader reader)
         {
+            List<Tag> result = new List<Tag>();
             while (reader.Read())
             {
                 Tag tag = new Tag
@@ -165,8 +165,10 @@ namespace MyNoteService.DataLayer.SQL
                     TagName = reader.GetString(reader.GetOrdinal("TagName"))
                 };
 
-                yield return tag;
+                result.Add(tag);
             }
+
+            return result;
         }
 
         private static Tag ReadTag(SqlDataReader reader)

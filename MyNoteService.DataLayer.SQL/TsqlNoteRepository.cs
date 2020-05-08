@@ -100,7 +100,12 @@ namespace MyNoteService.DataLayer.SQL
         }
 
         /// <summary>
-        /// Метод EditEntity изменяет только заголовок и содержание заметки, для изменения тэгов и доступа импользуются методы ... 
+        /// Метод EditEntity изменяет только заголовок и содержание заметки, 
+        /// для изменения тэгов и доступа импользуются методы:
+        /// AddNoteTag, 
+        /// RemoveNoteTag, 
+        /// AddUserWhithAccess, 
+        /// RemoveUserWhithAccess
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
@@ -141,21 +146,7 @@ namespace MyNoteService.DataLayer.SQL
 
                     using (var reader = command.ExecuteReader())
                     {
-                        // TODO: зарефакторить этот ужас
-                        while (reader.Read())
-                        {
-                            Note note = new Note
-                            {
-                                NoteID = reader.GetInt32(reader.GetOrdinal("NoteID")),
-                                Aurhor = _userRepository.GetEntityByID(reader.GetInt32(reader.GetOrdinal("UserId"))),
-                                Topic = reader.GetString(reader.GetOrdinal("Topic")),
-                                Text = reader.GetString(reader.GetOrdinal("Text"))
-                            };
-                            note.Tags = _tagRepository.GetNoteTags(note.NoteID);
-                            note.UsersWhithAccess = _userRepository.GetUsersWhithAccess(note.NoteID);
-
-                            yield return note;
-                        }
+                        return ReadNotes(reader);
                     }
                 }
             }
@@ -199,6 +190,28 @@ namespace MyNoteService.DataLayer.SQL
             note.UsersWhithAccess = _userRepository.GetUsersWhithAccess(note.NoteID);
 
             return note;
+        }
+
+        private IEnumerable<Note> ReadNotes(SqlDataReader reader)
+        {
+            List<Note> result = new List<Note>();
+
+            while (reader.Read())
+            {
+                Note note = new Note
+                {
+                    NoteID = reader.GetInt32(reader.GetOrdinal("NoteID")),
+                    Aurhor = _userRepository.GetEntityByID(reader.GetInt32(reader.GetOrdinal("UserId"))),
+                    Topic = reader.GetString(reader.GetOrdinal("Topic")),
+                    Text = reader.GetString(reader.GetOrdinal("Text"))
+                };
+                note.Tags = _tagRepository.GetNoteTags(note.NoteID);
+                note.UsersWhithAccess = _userRepository.GetUsersWhithAccess(note.NoteID);
+
+                result.Add(note);
+            }
+
+            return result;
         }
 
         public void AddNoteTag(int noteId, int tagId)
@@ -253,7 +266,6 @@ namespace MyNoteService.DataLayer.SQL
                     command.ExecuteNonQuery();
                 }
             }
-            throw new NotImplementedException();
         }
 
         public void RemoveUserWhithAccess(int noteId, int userId)

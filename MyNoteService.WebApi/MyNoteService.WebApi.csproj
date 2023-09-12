@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyNoteService.DataLayer.SQL\MyNoteService.DataLayer.SQL.csproj" />
+    <ProjectReference Include="..\MyNoteService.DataLayer\MyNoteService.DataLayer.csproj" />
+  </ItemGroup>
+
 </Project>

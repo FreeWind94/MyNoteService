@@ -177,7 +177,7 @@ namespace MyNoteService.DataLayer.SQL
         {
             if (!reader.Read())
             {
-                throw new IOException("Insert query did not return User");
+                return null;
             }
             Note note = new Note
             {

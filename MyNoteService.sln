@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNoteService.Model", "MyNoteService.Model\MyNoteService.Model.csproj", "{B8405FBE-5E75-45FE-991F-6234AB1E4337}"
 EndProject
@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNoteService.DataLayer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNoteService.DataLayer.SQL", "MyNoteService.DataLayer.SQL\MyNoteService.DataLayer.SQL.csproj", "{1C14A684-540B-48FB-84C2-22EE2B597D24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNoteService.DataLayer.SQL.Test", "MyNoteService.DataLayer.SQL.Test\MyNoteService.DataLayer.SQL.Test.csproj", "{F1233C45-9E72-4C37-B402-9244F4B2D05F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNoteService.DataLayer.SQL.Test", "MyNoteService.DataLayer.SQL.Test\MyNoteService.DataLayer.SQL.Test.csproj", "{F1233C45-9E72-4C37-B402-9244F4B2D05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNoteService.WebApi", "MyNoteService.WebApi\MyNoteService.WebApi.csproj", "{BBBD901D-9AB6-4CC3-AE36-E4B94BDB9396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F1233C45-9E72-4C37-B402-9244F4B2D05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1233C45-9E72-4C37-B402-9244F4B2D05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1233C45-9E72-4C37-B402-9244F4B2D05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBBD901D-9AB6-4CC3-AE36-E4B94BDB9396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBBD901D-9AB6-4CC3-AE36-E4B94BDB9396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBBD901D-9AB6-4CC3-AE36-E4B94BDB9396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBBD901D-9AB6-4CC3-AE36-E4B94BDB9396}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

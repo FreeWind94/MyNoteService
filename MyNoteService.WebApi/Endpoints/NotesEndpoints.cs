@@ -8,10 +8,10 @@ static class NotesEndpoints
 {
     public static void AddNotesEndpoints(this WebApplication app)
     {
-        app.MapGet("/notes", GetAllNotes);
-        app.MapGet("/notes/{id:int}", GetNoteById);
-        app.MapPost("/notes", AddNote);
-        app.MapPut("/notes/{id:int}", EditNote);
+        app.MapGet("/notes", GetAllNotes).Produces<IEnumerable<Note>>();
+        app.MapGet("/notes/{id:int}", GetNoteById).Produces<Note>();
+        app.MapPost("/notes", AddNote).Produces<Note>();
+        app.MapPut("/notes/{id:int}", EditNote).Produces<Note>();
         app.MapDelete("/notes/{id:int}", DeleteNote);
     }
 

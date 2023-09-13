@@ -29,5 +29,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.AddNotesEndpoints();
+app.AddUsersEndpoints();
 
 app.Run();

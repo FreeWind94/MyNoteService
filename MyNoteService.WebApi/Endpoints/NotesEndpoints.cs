@@ -31,7 +31,7 @@ static class NotesEndpoints
 
     public static async Task<IResult> AddNote(INoteRepository noteRepository, Note note)
     {
-        noteRepository.CreateEntity(note);
+        note = noteRepository.CreateEntity(note);
         return Results.Created($"notes/{note.NoteID}", note);
     }
 
@@ -43,7 +43,7 @@ static class NotesEndpoints
             return Results.NotFound();
         }
 
-        noteRepository.EditEntity(updatedNote);
+        updatedNote = noteRepository.EditEntity(updatedNote);
         return Results.Ok(updatedNote);
     }
 

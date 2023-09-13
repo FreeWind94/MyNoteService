@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Data Source=DESKTOP-H9KPRLI;Initial Catalog=notesdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 builder.Services.AddSingleton<IUserRepository>(provider => new TsqlUserRepository(connectionString));
 builder.Services.AddSingleton<ITagRepository>(provider => new TsqlTagRepository(connectionString));
-builder.Services.AddSingleton<INoteRepository>(provider => new TsqlNoteRepository(connectionString, 
-    provider.GetService<IUserRepository>(), 
+builder.Services.AddSingleton<INoteRepository>(provider => new TsqlNoteRepository(connectionString,
+    provider.GetService<IUserRepository>(),
     provider.GetService<ITagRepository>()));
 
 // Add services to the container.
@@ -29,11 +29,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/notes", ([FromServices]INoteRepository repo) => {
+app.MapGet("/notes", ([FromServices] INoteRepository repo) =>
+{
     return repo.GetEntities();
 });
 
-app.MapGet("/notes/{id}", ([FromServices] INoteRepository repo, int id) => {
+app.MapGet("/notes/{id}", ([FromServices] INoteRepository repo, int id) =>
+{
     var note = repo.GetEntityByID(id);
     return note is not null
         ? Results.Ok(note)
@@ -58,9 +60,10 @@ app.MapPut("/notes/{id}", ([FromServices] INoteRepository repo, int id, Note upd
     return Results.Ok(updatedNote);
 });
 
-app.MapDelete("/notes/{id}", ([FromServices] INoteRepository repo, int id) => {
+app.MapDelete("/notes/{id}", ([FromServices] INoteRepository repo, int id) =>
+{
     repo.DeleteEntity(id);
-    return Results.Ok(); 
+    return Results.Ok();
 });
 
 app.Run();

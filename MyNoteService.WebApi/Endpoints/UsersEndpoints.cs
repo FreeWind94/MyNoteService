@@ -46,7 +46,7 @@ static class UsersEndpoints
 
     public static async Task<IResult> AddUser(IUserRepository userRepository, User user)
     {
-        user = userRepository.CreateEntity(user);
+        userRepository.CreateEntity(user);
         return Results.Created($"users/{user.UserID}", user);
     }
 
@@ -59,7 +59,7 @@ static class UsersEndpoints
             return Results.NotFound();
         }
 
-        updatedUser = userRepository.EditEntity(updatedUser);
+        userRepository.EditEntity(updatedUser);
         return Results.Ok(updatedUser);
     }
 

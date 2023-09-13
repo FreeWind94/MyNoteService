@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using MyNoteService.DataLayer;
 using MyNoteService.DataLayer.SQL;
-using MyNoteService.Model;
+using MyNoteService.WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// TODO: избавиться от харткода
+// TODO: избавиться от хардкода
 var connectionString = "Data Source=DESKTOP-H9KPRLI;Initial Catalog=notesdb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 builder.Services.AddSingleton<IUserRepository>(provider => new TsqlUserRepository(connectionString));
 builder.Services.AddSingleton<ITagRepository>(provider => new TsqlTagRepository(connectionString));
@@ -29,41 +28,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/notes", ([FromServices] INoteRepository repo) =>
-{
-    return repo.GetEntities();
-});
-
-app.MapGet("/notes/{id}", ([FromServices] INoteRepository repo, int id) =>
-{
-    var note = repo.GetEntityByID(id);
-    return note is not null
-        ? Results.Ok(note)
-        : Results.NotFound();
-});
-
-app.MapPost("/notes", ([FromServices] INoteRepository repo, Note note) =>
-{
-    repo.CreateEntity(note);
-    return Results.Created($"notes/{note.NoteID}", note);
-});
-
-app.MapPut("/notes/{id}", ([FromServices] INoteRepository repo, int id, Note updatedNote) =>
-{
-    var note = repo.GetEntityByID(id);
-    if (note is null)
-    {
-        return Results.NotFound();
-    }
-
-    repo.EditEntity(updatedNote);
-    return Results.Ok(updatedNote);
-});
-
-app.MapDelete("/notes/{id}", ([FromServices] INoteRepository repo, int id) =>
-{
-    repo.DeleteEntity(id);
-    return Results.Ok();
-});
+app.AddNotesEndpoints();
 
 app.Run();

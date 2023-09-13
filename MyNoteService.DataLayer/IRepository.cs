@@ -42,5 +42,7 @@ namespace MyNoteService.DataLayer
         /// </summary>
         /// <param name="id"></param>
         void DeleteEntity(int id); 
+
+        // TODO: добавить async методы
     }
 }

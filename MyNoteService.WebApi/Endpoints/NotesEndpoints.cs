@@ -8,11 +8,12 @@ static class NotesEndpoints
 {
     public static void AddNotesEndpoints(this WebApplication app)
     {
-        app.MapGet("/notes", GetAllNotes).Produces<IEnumerable<Note>>();
-        app.MapGet("/notes/{id:int}", GetNoteById).Produces<Note>();
-        app.MapPost("/notes", AddNote).Produces<Note>();
-        app.MapPut("/notes/{id:int}", EditNote).Produces<Note>();
-        app.MapDelete("/notes/{id:int}", DeleteNote);
+        var notes = app.MapGroup("/notes");
+        notes.MapGet("/", GetAllNotes).Produces<IEnumerable<Note>>();
+        notes.MapGet("/{id:int}", GetNoteById).Produces<Note>();
+        notes.MapPost("/", AddNote).Produces<Note>();
+        notes.MapPut("/{id:int}", EditNote).Produces<Note>();
+        notes.MapDelete("/{id:int}", DeleteNote);
     }
 
     public static async Task<IResult> GetAllNotes(INoteRepository noteRepository)

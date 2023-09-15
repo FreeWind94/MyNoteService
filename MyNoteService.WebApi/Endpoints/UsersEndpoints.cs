@@ -1,5 +1,4 @@
 ﻿using MyNoteService.DataLayer;
-using MyNoteService.DataLayer.SQL;
 using MyNoteService.Model;
 
 namespace MyNoteService.WebApi.Endpoints;
@@ -8,12 +7,13 @@ static class UsersEndpoints
 {
     public static void AddUsersEndpoints(this WebApplication app)
     {
-        app.MapGet("/users", GetAllUsers).Produces<IEnumerable<User>>();
-        app.MapGet("/users/{id:int}", GetUserById).Produces<User>();
-        app.MapGet("/users/byLogin/{login}", GetUserByLogin).Produces<User>();
-        app.MapPost("/users", AddUser).Produces<User>();
-        app.MapPut("/users/{id:int}", EditUser).Produces<User>();
-        app.MapDelete("/users/{id:int}", DeleteUser);
+        var users = app.MapGroup("/users");
+        users.MapGet("/", GetAllUsers).Produces<IEnumerable<User>>();
+        users.MapGet("/{id:int}", GetUserById).Produces<User>();
+        users.MapGet("/byLogin/{login}", GetUserByLogin).Produces<User>();
+        users.MapPost("/", AddUser).Produces<User>();
+        users.MapPut("/{id:int}", EditUser).Produces<User>();
+        users.MapDelete("/{id:int}", DeleteUser);
     }
 
     public static async Task<IResult> GetAllUsers(IUserRepository userRepository)

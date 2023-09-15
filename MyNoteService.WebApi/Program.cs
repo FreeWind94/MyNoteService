@@ -30,5 +30,6 @@ app.UseHttpsRedirection();
 
 app.AddNotesEndpoints();
 app.AddUsersEndpoints();
+app.AddTagsEndpoints();
 
 app.Run();

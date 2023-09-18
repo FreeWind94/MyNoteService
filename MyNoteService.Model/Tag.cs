@@ -8,5 +8,14 @@ namespace MyNoteService.Model
     {
         public int TagID { get; set; }
         public string TagName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Tag tag)
+            {
+                return TagID == tag.TagID;
+            }
+            return base.Equals(obj);
+        }
     }
 }
